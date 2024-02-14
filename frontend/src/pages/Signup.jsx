@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { signup } from "../actions/auth";
 import { Link, useNavigate } from "react-router-dom";
+import { Button, Label, TextInput } from "flowbite-react";
+import { FaUser } from "react-icons/fa";
 
 const Signup = ({ signup, isAuthenticated }) => {
   const [accountCreated, setAccountcreated] = useState(false);
@@ -46,48 +48,132 @@ const Signup = ({ signup, isAuthenticated }) => {
     return navigate("/login");
   }
 
+  // return (
+  //   <div>
+  //     <h1>Signup</h1>
+  //     <form onSubmit={handleOnSubmit}>
+  //       <div className="form-group">
+  //         <input
+  //           className="form-control"
+  //           placeholder="name"
+  //           name="name"
+  //           value={name}
+  //           onChange={handleOnChange}
+  //           required
+  //         />
+  //       </div>
+  //       <div className="form-group">
+  //         <input
+  //           className="form-control"
+  //           type="email"
+  //           placeholder="email"
+  //           name="email"
+  //           value={email}
+  //           onChange={handleOnChange}
+  //           required
+  //         />
+  //       </div>
+  //       <div className="form-group">
+  //         <input
+  //           className="form-control"
+  //           type="password"
+  //           placeholder="password"
+  //           name="password"
+  //           value={password}
+  //           onChange={handleOnChange}
+  //           required
+  //         />
+  //       </div>
+  //       <div className="form-group">
+  //         <input
+  //           className="form-control"
+  //           type="password"
+  //           placeholder="confirm password"
+  //           name="re_password"
+  //           value={re_password}
+  //           onChange={handleOnChange}
+  //           required
+  //         />
+  //       </div>
+  //       {matchedPassword && (
+  //         <div className="alert alert-danger" role="alert">
+  //           <span className="font-medium">Error! </span>
+  //           {"Password don't match"}
+  //         </div>
+  //       )}
+  //       <button className="btn btn-primary">Sign up</button>
+  //     </form>
+  //     <p className="mt-3">
+  //       Already have an account <Link to={"/login"}>Sign In</Link>
+  //     </p>
+  //     {accountCreated && (
+  //       <div className="alert mt-1 alert-success">
+  //         <span className="font-medium">Success account created!</span> review
+  //         your email
+  //       </div>
+  //     )}
+  //   </div>
+  // );
+
   return (
-    <div>
-      <h1>Signup</h1>
-      <form onSubmit={handleOnSubmit}>
-        <div className="form-group">
-          <input
-            className="form-control"
-            placeholder="name"
+    <div className="px-4 mt-14 mx-auto max-w-md mb-5">
+      <h1 className="font-bold text-5xl flex-row md:flex md:justify-center">
+        <FaUser className="mr-3" />
+        Sing Up
+      </h1>
+      <p className="my-10 text-center text-lg">Please create your account</p>
+      <form className="flex max-w-md flex-col gap-4" onSubmit={handleOnSubmit}>
+        <div>
+          <div className="mb-2 block">
+            <Label htmlFor="name" value="name" />
+          </div>
+          <TextInput
+            id="name"
+            type="text"
+            placeholder="John Doe"
             name="name"
             value={name}
             onChange={handleOnChange}
             required
           />
         </div>
-        <div className="form-group">
-          <input
-            className="form-control"
+        <div>
+          <div className="mb-2 block">
+            <Label htmlFor="email1" value="email" />
+          </div>
+          <TextInput
+            id="email1"
             type="email"
-            placeholder="email"
+            placeholder="email@appsystem.com"
             name="email"
             value={email}
             onChange={handleOnChange}
             required
           />
         </div>
-        <div className="form-group">
-          <input
-            className="form-control"
+        <div>
+          <div className="mb-2 block">
+            <Label htmlFor="password" value="password" />
+          </div>
+          <TextInput
+            id="password"
             type="password"
-            placeholder="password"
             name="password"
+            placeholder="*************"
             value={password}
             onChange={handleOnChange}
             required
           />
         </div>
-        <div className="form-group">
-          <input
-            className="form-control"
+        <div>
+          <div className="mb-2 block">
+            <Label htmlFor="password1" value="password" />
+          </div>
+          <TextInput
+            id="password1"
             type="password"
-            placeholder="confirm password"
             name="re_password"
+            placeholder="*************"
             value={re_password}
             onChange={handleOnChange}
             required
@@ -99,10 +185,15 @@ const Signup = ({ signup, isAuthenticated }) => {
             {"Password don't match"}
           </div>
         )}
-        <button className="btn btn-primary">Sign up</button>
+        <Button type="submit" className="my-5">
+          Submit
+        </Button>
       </form>
-      <p className="mt-3">
-        Already have an account <Link to={"/login"}>Sign In</Link>
+      <p className="mt-3 text-sm">
+        Already have an account{" "}
+        <Link to={"/login"} className="text-cyan-500">
+          Sign In
+        </Link>
       </p>
       {accountCreated && (
         <div className="alert mt-1 alert-success">

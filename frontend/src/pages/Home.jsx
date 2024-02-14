@@ -1,18 +1,35 @@
-import { Link } from "react-router-dom";
+import { Card } from "flowbite-react";
+import desktop from "../assets/desktop.jpg";
 
 const Home = () => {
   return (
-    <div className="jumbotron mt-5">
-      <h1 className="display-4">Welcome to the auth system!</h1>
-      <p className="lead">
-        This is a simple hero unit, a simple jumbotron-style component for
-        calling extra attention to featured content or information.
-      </p>
-      <hr className="my-4" />
-      <p>Click to the Log In button</p>
-      <Link className="btn btn-primary btn-lg" to="/login">
-        Login
-      </Link>
+    <div className="mt-16 flex justify-evenly">
+      <Card
+        className="max-w-sm"
+        imgAlt="Meaningful alt text for an image that is not purely decorative"
+        imgSrc={desktop}
+      >
+        <h5 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+          Noteworthy technology acquisitions 2021
+        </h5>
+        <p className="font-normal text-gray-700 dark:text-gray-400">
+          Here are the biggest enterprise technology acquisitions of 2021 so
+          far, in reverse chronological order.
+        </p>
+      </Card>
+      <Card
+        className="max-w-sm"
+        imgAlt="Meaningful alt text for an image that is not purely decorative"
+        imgSrc={desktop}
+      >
+        <h5 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+          Noteworthy technology acquisitions 2021
+        </h5>
+        <p className="font-normal text-gray-700 dark:text-gray-400">
+          Here are the biggest enterprise technology acquisitions of 2021 so
+          far, in reverse chronological order.
+        </p>
+      </Card>
     </div>
   );
 };
