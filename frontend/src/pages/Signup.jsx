@@ -1,9 +1,11 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { connect } from "react-redux";
 import { signup } from "../actions/auth";
 import { Link, useNavigate } from "react-router-dom";
-import { Button, Label, TextInput } from "flowbite-react";
+import { Button, Label, TextInput, Toast } from "flowbite-react";
 import { FaUser } from "react-icons/fa";
+import { HiCheck } from "react-icons/hi";
+import { ToastContainer, toast } from "react-toastify";
 
 const Signup = ({ signup, isAuthenticated }) => {
   const [accountCreated, setAccountcreated] = useState(false);
@@ -47,6 +49,9 @@ const Signup = ({ signup, isAuthenticated }) => {
   if (accountCreated) {
     return navigate("/login");
   }
+
+  const notify = () =>
+    toast.success("Account created successfully, check your email");
 
   // return (
   //   <div>
@@ -125,7 +130,7 @@ const Signup = ({ signup, isAuthenticated }) => {
       <form className="flex max-w-md flex-col gap-4" onSubmit={handleOnSubmit}>
         <div>
           <div className="mb-2 block">
-            <Label htmlFor="name" value="name" />
+            <Label htmlFor="name" value="Name" />
           </div>
           <TextInput
             id="name"
@@ -135,11 +140,12 @@ const Signup = ({ signup, isAuthenticated }) => {
             value={name}
             onChange={handleOnChange}
             required
+            autoComplete="off"
           />
         </div>
         <div>
           <div className="mb-2 block">
-            <Label htmlFor="email1" value="email" />
+            <Label htmlFor="email1" value="Email" />
           </div>
           <TextInput
             id="email1"
@@ -148,12 +154,13 @@ const Signup = ({ signup, isAuthenticated }) => {
             name="email"
             value={email}
             onChange={handleOnChange}
+            autoComplete="off"
             required
           />
         </div>
         <div>
           <div className="mb-2 block">
-            <Label htmlFor="password" value="password" />
+            <Label htmlFor="password" value="Password" />
           </div>
           <TextInput
             id="password"
@@ -167,7 +174,7 @@ const Signup = ({ signup, isAuthenticated }) => {
         </div>
         <div>
           <div className="mb-2 block">
-            <Label htmlFor="password1" value="password" />
+            <Label htmlFor="password1" value="Confirm password" />
           </div>
           <TextInput
             id="password1"
@@ -201,6 +208,10 @@ const Signup = ({ signup, isAuthenticated }) => {
           your email
         </div>
       )}
+      <div>
+        <button onClick={notify}>Notify!</button>
+        <ToastContainer position="bottom-right" draggable />
+      </div>
     </div>
   );
 };

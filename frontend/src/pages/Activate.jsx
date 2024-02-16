@@ -1,25 +1,29 @@
 import { connect } from "react-redux";
-import { verify } from "../actions/auth";
 import { useParams } from "react-router-dom";
-import { useState } from "react";
+import { Button } from "flowbite-react";
+import { FaCheckCircle } from "react-icons/fa";
+import { activate } from "../actions/auth";
 
-const Activate = ({ verify }) => {
-  const [verified, setVerified] = useState(false);
+const Activate = ({ activate }) => {
   const { uid, token } = useParams();
-  const handleOnSubmit = () => {
-    verify(uid, token);
-    setVerified(true);
+
+  const handleOnSubmit = (e) => {
+    e.preventDefault();
+    activate(uid, token);
   };
 
   return (
-    <div className="container mt-5">
-      <h1>Sing in</h1>
-      <p>Sign into your Account</p>
-      <form onSubmit={handleOnSubmit}>
-        <button className="btn btn-primary">Login</button>
+    <div className="mt-14 mx-auto max-w-md mb-5 text-center">
+      <h1 className="font-bold text-4xl flex justify-center">
+        <FaCheckCircle className="mr-3" />
+        Activate your account
+      </h1>
+      <p className="my-10">Please activate your Account</p>
+      <form onSubmit={handleOnSubmit} className="flex justify-center">
+        <Button size={"xl"}>ACTIVATE</Button>
       </form>
     </div>
   );
 };
 
-export default connect(null, { verify })(Activate);
+export default connect(null, { activate })(Activate);

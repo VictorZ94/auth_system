@@ -108,6 +108,7 @@ const login = (email, password) => async (dispatch) => {
     });
 
     dispatch(load_user());
+    return res.status;
   } catch (err) {
     dispatch({
       type: LOGIN_FAIL,
@@ -146,7 +147,7 @@ export const signup =
     }
   };
 
-export const verify = (uid, token) => async (dispatch) => {
+export const activate = (uid, token) => async (dispatch) => {
   const config = {
     header: {
       "Content-Type": "application/json",

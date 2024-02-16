@@ -3,7 +3,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { connect } from "react-redux";
 import login from "../actions/auth";
 import { Button, Label, TextInput } from "flowbite-react";
-import { FaUser } from "react-icons/fa";
+import { IoEnter } from "react-icons/io5";
+import { ToastContainer, toast } from "react-toastify";
 
 const Login = ({ login, isAuthenticated }) => {
   const [formData, setFormData] = useState({
@@ -18,11 +19,12 @@ const Login = ({ login, isAuthenticated }) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleOnSubmit = (e) => {
+  const handleOnSubmit = async (e) => {
     e.preventDefault();
 
-    login(email, password);
+    await login(email, password);
   };
+  // const notify = () => toast.error("Error logged!");
 
   if (isAuthenticated) {
     return navigate("/");
@@ -69,7 +71,7 @@ const Login = ({ login, isAuthenticated }) => {
   return (
     <div className="mt-14 mx-auto max-w-md mb-5">
       <h1 className="font-bold text-5xl flex justify-center">
-        <FaUser className="mr-3" />
+        <IoEnter className="mr-3" />
         Sing in
       </h1>
       <p className="my-10 text-center text-lg">Sign into your account</p>
@@ -84,6 +86,7 @@ const Login = ({ login, isAuthenticated }) => {
             placeholder="email@appsystem.com"
             name="email"
             value={email}
+            autoComplete="off"
             onChange={handleOnChange}
             required
           />
@@ -118,6 +121,9 @@ const Login = ({ login, isAuthenticated }) => {
           Reset password
         </Link>
       </p>
+      <div>
+        <ToastContainer position="bottom-right" draggable />
+      </div>
     </div>
   );
 };

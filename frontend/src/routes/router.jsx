@@ -6,6 +6,7 @@ import ResetPassword from "../pages/ResetPassword";
 import ResetPasswordConfirm from "../pages/ResetPasswordConfirm";
 import Activate from "../pages/Activate";
 import Layout from "../hocs/Layout";
+import Logout from "../pages/Logout";
 
 export const router = createBrowserRouter([
   {
@@ -35,6 +36,10 @@ export const router = createBrowserRouter([
       {
         path: "/activate/:uid/:token",
         element: <Activate />,
+      },
+      {
+        path: "/logout",
+        element: <Logout />,
       },
     ],
   },
