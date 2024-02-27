@@ -1,9 +1,11 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { reset_password } from "../actions/auth";
 import { Button, Label, TextInput } from "flowbite-react";
+import { ToastContainer, toast } from "react-toastify";
 
 const ResetPassword = ({ reset_password }) => {
+  const [resetSend, setResetSend] = useState(false);
   const [formData, setFormData] = useState({
     email: "",
   });
@@ -18,7 +20,14 @@ const ResetPassword = ({ reset_password }) => {
     e.preventDefault();
 
     reset_password(email);
+    setResetSend(true);
   };
+
+  useEffect(() => {
+    if (resetSend) {
+      toast.success("Check your email to reset password!");
+    }
+  }, [resetSend]);
 
   return (
     <div className="mt-14 mx-auto max-w-md mb-5">
@@ -46,6 +55,9 @@ const ResetPassword = ({ reset_password }) => {
           Reset password
         </Button>
       </form>
+      <div>
+        <ToastContainer position="bottom-right" draggable />
+      </div>
     </div>
   );
 };
