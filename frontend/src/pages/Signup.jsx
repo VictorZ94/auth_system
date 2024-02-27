@@ -1,10 +1,9 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { signup } from "../actions/auth";
 import { Link, useNavigate } from "react-router-dom";
-import { Button, Label, TextInput, Toast } from "flowbite-react";
+import { Button, Label, TextInput } from "flowbite-react";
 import { FaUser } from "react-icons/fa";
-import { HiCheck } from "react-icons/hi";
 import { ToastContainer, toast } from "react-toastify";
 
 const Signup = ({ signup, isAuthenticated }) => {
@@ -46,12 +45,15 @@ const Signup = ({ signup, isAuthenticated }) => {
     return navigate("/");
   }
 
-  if (accountCreated) {
-    return navigate("/login");
-  }
+  // if (accountCreated) {
+  //   return navigate("/login");
+  // }
 
-  const notify = () =>
-    toast.success("Account created successfully, check your email");
+  useEffect(() => {
+    if (accountCreated) {
+      toast.success("Account created successfully, check your email");
+    }
+  }, [accountCreated]);
 
   // return (
   //   <div>
@@ -202,14 +204,13 @@ const Signup = ({ signup, isAuthenticated }) => {
           Sign In
         </Link>
       </p>
-      {accountCreated && (
+      {/* {accountCreated && (
         <div className="alert mt-1 alert-success">
           <span className="font-medium">Success account created!</span> review
           your email
         </div>
-      )}
+      )} */}
       <div>
-        <button onClick={notify}>Notify!</button>
         <ToastContainer position="bottom-right" draggable />
       </div>
     </div>
