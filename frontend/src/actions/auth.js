@@ -55,22 +55,23 @@ export const checkAuthenticated = () => async (dispatch) => {
 
 export const load_user = () => async (dispatch) => {
   if (localStorage.getItem("access")) {
+    const access = localStorage.getItem("access");
+
     const config = {
       header: {
-        "Access-Control-Allow-Origin": "*",
         "Content-Type": "application/json",
-        Authorization: `JWT ${localStorage.getItem("access")}`,
+        Authorization: `JWT ${access}`,
       },
     };
 
+    console.log("auth", config);
     try {
-      const res = await axios(
+      const res = await axios.get(
         "http://localhost:8000/auth/users/me/",
-        { method: "GET" },
         config
       );
 
-      console.log("users/me/", res.data);
+      // console.log("users/me/", res.error);
 
       dispatch({
         type: USER_LOADED_SUCCESS,
@@ -147,12 +148,13 @@ export const signup =
     }
   };
 
-export const activate = (uid, token) => async (dispatch) => {
+export const activateAccount = (uid, token) => async (dispatch) => {
   const config = {
     header: {
       "Content-Type": "application/json",
     },
   };
+  console.log("activate function", uid, token);
 
   try {
     await axios.post(
