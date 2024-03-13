@@ -1,20 +1,29 @@
+// @packages
 import { useEffect, useState } from "react";
-import { connect } from "react-redux";
-import { signup } from "../actions/auth";
 import { Link, useNavigate } from "react-router-dom";
 import { Button, Label, TextInput } from "flowbite-react";
 import { FaUser } from "react-icons/fa";
 import { ToastContainer, toast } from "react-toastify";
 
-const Signup = ({ signup, isAuthenticated }) => {
+// @redux
+import { useDispatch, useSelector } from "react-redux";
+
+// @actions
+import { signup } from "../actions/auth";
+
+const Signup = () => {
   const [accountCreated, setAccountcreated] = useState(false);
-  const [matchedPassword, setMatchedPassword] = useState(false);
+  const [isErrorPassword, setIsErrorPassword] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     password: "",
     re_password: "",
   });
+  const { isError, message, isAuthenticated } = useSelector(
+    (state) => state.auth
+  );
+  const dispath = useDispatch();
 
   const navigate = useNavigate();
 
@@ -24,103 +33,27 @@ const Signup = ({ signup, isAuthenticated }) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  if (matchedPassword) {
-    setTimeout(() => {
-      setMatchedPassword(!matchedPassword);
-    }, [3000]);
-  }
-
   const handleOnSubmit = (e) => {
     e.preventDefault();
+    setIsErrorPassword(false);
 
-    if (password === re_password) {
-      signup(name, email, password, re_password);
-      setAccountcreated(true);
+    if (password !== re_password) {
+      setIsErrorPassword(true);
       return;
     }
-    setMatchedPassword(true);
+    dispath(signup(name, email, password, re_password));
+    if (!isError) setAccountcreated(true);
   };
 
   if (isAuthenticated) {
     return navigate("/");
   }
 
-  // if (accountCreated) {
-  //   return navigate("/login");
-  // }
-
   useEffect(() => {
     if (accountCreated) {
       toast.success("Account created successfully, check your email");
     }
   }, [accountCreated]);
-
-  // return (
-  //   <div>
-  //     <h1>Signup</h1>
-  //     <form onSubmit={handleOnSubmit}>
-  //       <div className="form-group">
-  //         <input
-  //           className="form-control"
-  //           placeholder="name"
-  //           name="name"
-  //           value={name}
-  //           onChange={handleOnChange}
-  //           required
-  //         />
-  //       </div>
-  //       <div className="form-group">
-  //         <input
-  //           className="form-control"
-  //           type="email"
-  //           placeholder="email"
-  //           name="email"
-  //           value={email}
-  //           onChange={handleOnChange}
-  //           required
-  //         />
-  //       </div>
-  //       <div className="form-group">
-  //         <input
-  //           className="form-control"
-  //           type="password"
-  //           placeholder="password"
-  //           name="password"
-  //           value={password}
-  //           onChange={handleOnChange}
-  //           required
-  //         />
-  //       </div>
-  //       <div className="form-group">
-  //         <input
-  //           className="form-control"
-  //           type="password"
-  //           placeholder="confirm password"
-  //           name="re_password"
-  //           value={re_password}
-  //           onChange={handleOnChange}
-  //           required
-  //         />
-  //       </div>
-  //       {matchedPassword && (
-  //         <div className="alert alert-danger" role="alert">
-  //           <span className="font-medium">Error! </span>
-  //           {"Password don't match"}
-  //         </div>
-  //       )}
-  //       <button className="btn btn-primary">Sign up</button>
-  //     </form>
-  //     <p className="mt-3">
-  //       Already have an account <Link to={"/login"}>Sign In</Link>
-  //     </p>
-  //     {accountCreated && (
-  //       <div className="alert mt-1 alert-success">
-  //         <span className="font-medium">Success account created!</span> review
-  //         your email
-  //       </div>
-  //     )}
-  //   </div>
-  // );
 
   return (
     <div className="px-4 mt-14 mx-auto max-w-md mb-5">
@@ -188,10 +121,25 @@ const Signup = ({ signup, isAuthenticated }) => {
             required
           />
         </div>
-        {matchedPassword && (
-          <div className="alert alert-danger" role="alert">
-            <span className="font-medium">Error! </span>
-            {"Password don't match"}
+        {isErrorPassword && (
+          <div
+            className="flex items-center p-4 my-4 text-sm text-red-800 border border-red-300 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400 dark:border-red-800"
+            role="alert"
+          >
+            <svg
+              className="flex-shrink-0 inline w-4 h-4 me-3"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="currentColor"
+              viewBox="0 0 20 20"
+            >
+              <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
+            </svg>
+            <span className="sr-only">Info</span>
+            <div>
+              <span className="font-medium">Danger alert!</span> <br></br>
+              Password don't match
+            </div>
           </div>
         )}
         <Button type="submit" className="my-5">
@@ -204,12 +152,27 @@ const Signup = ({ signup, isAuthenticated }) => {
           Sign In
         </Link>
       </p>
-      {/* {accountCreated && (
-        <div className="alert mt-1 alert-success">
-          <span className="font-medium">Success account created!</span> review
-          your email
+      {isError && (
+        <div
+          className="flex items-center p-4 my-4 text-sm text-red-800 border border-red-300 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400 dark:border-red-800"
+          role="alert"
+        >
+          <svg
+            className="flex-shrink-0 inline w-4 h-4 me-3"
+            aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+          >
+            <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
+          </svg>
+          <span className="sr-only">Info</span>
+          <div>
+            <span className="font-medium">Danger alert!</span> <br></br>
+            {message}
+          </div>
         </div>
-      )} */}
+      )}
       <div>
         <ToastContainer position="bottom-right" draggable />
       </div>
@@ -217,8 +180,4 @@ const Signup = ({ signup, isAuthenticated }) => {
   );
 };
 
-const mapStateToProps = (state) => ({
-  isAuthenticated: state.auth.isAuthenticated,
-});
-
-export default connect(mapStateToProps, { signup })(Signup);
+export default Signup;
