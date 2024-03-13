@@ -1,7 +1,14 @@
 import { Card } from "flowbite-react";
 import desktop from "../assets/desktop.jpg";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 const Home = () => {
+  const { isAuthenticated } = useSelector((state) => state.auth);
+  const navigate = useNavigate();
+
+  if (!isAuthenticated) return navigate("/login");
+
   return (
     <div className="mt-16 flex justify-evenly">
       <Card
