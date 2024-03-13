@@ -21,6 +21,8 @@ const initialState = {
   refresh: localStorage.getItem("refresh"),
   isAuthenticated: false,
   user: null,
+  isError: false,
+  message: "",
 };
 
 function authReducer(state = initialState, action) {
@@ -31,11 +33,15 @@ function authReducer(state = initialState, action) {
       return {
         ...state,
         isAuthenticated: true,
+        isError: false,
+        message: "",
       };
     case SIGNUP_SUCCESS:
       return {
         ...state,
         isAuthenticated: false,
+        isError: false,
+        message: "",
       };
     case LOGIN_SUCCESS:
       localStorage.setItem("access", payload.access);
@@ -45,6 +51,8 @@ function authReducer(state = initialState, action) {
         isAuthenticated: true,
         access: payload.access,
         refresh: payload.refresh,
+        isError: false,
+        message: "",
       };
     case LOGIN_FAIL:
     case SIGNUP_FAIL:
@@ -57,16 +65,22 @@ function authReducer(state = initialState, action) {
         refresh: null,
         isAuthenticated: false,
         user: null,
+        isError: true,
+        message: payload,
       };
     case USER_LOADED_SUCCESS:
       return {
         ...state,
         user: payload,
+        isError: false,
+        message: "",
       };
     case AUTHENTICATED_FAIL:
       return {
         ...state,
         isAuthenticated: false,
+        isError: false,
+        message: payload,
       };
     case PASSWORD_RESET_SUCCESS:
     case PASSWORD_RESET_FAIL:

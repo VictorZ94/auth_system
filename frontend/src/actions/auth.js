@@ -113,6 +113,7 @@ const login = (email, password) => async (dispatch) => {
   } catch (err) {
     dispatch({
       type: LOGIN_FAIL,
+      payload: JSON.stringify(err.response.data),
     });
   }
 };
@@ -144,6 +145,7 @@ export const signup =
     } catch (err) {
       dispatch({
         type: SIGNUP_FAIL,
+        payload: JSON.stringify(err.response.data),
       });
     }
   };
