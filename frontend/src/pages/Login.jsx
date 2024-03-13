@@ -1,16 +1,19 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { connect } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import login from "../actions/auth";
 import { Button, Label, TextInput } from "flowbite-react";
 import { IoEnter } from "react-icons/io5";
-import { ToastContainer, toast } from "react-toastify";
 
-const Login = ({ login, isAuthenticated }) => {
+const Login = () => {
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
+  const { isError, message, isAuthenticated } = useSelector(
+    (state) => state.auth
+  );
+  const dispath = useDispatch();
   const navigate = useNavigate();
 
   const { email, password } = formData;
@@ -19,54 +22,15 @@ const Login = ({ login, isAuthenticated }) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleOnSubmit = async (e) => {
+  const handleOnSubmit = (e) => {
     e.preventDefault();
 
-    await login(email, password);
+    dispath(login(email, password));
   };
-  // const notify = () => toast.error("Error logged!");
 
   if (isAuthenticated) {
     return navigate("/");
   }
-
-  // return (
-  //   <div className="container mt-5">
-  //     <h1>Sing in</h1>
-  //     <p>Sign into your Account</p>
-  //     <form onSubmit={handleOnSubmit}>
-  //       <div className="form-group">
-  //         <input
-  //           className="form-control"
-  //           type="email"
-  //           placeholder="email"
-  //           name="email"
-  //           value={email}
-  //           onChange={handleOnChange}
-  //           required
-  //         />
-  //       </div>
-  //       <div className="form-group">
-  //         <input
-  //           className="form-control"
-  //           type="password"
-  //           placeholder="password"
-  //           name="password"
-  //           value={password}
-  //           onChange={handleOnChange}
-  //           required
-  //         />
-  //       </div>
-  //       <button className="btn btn-primary">Login</button>
-  //     </form>
-  //     <p className="mt-3">
-  //       Don't have an account <Link to={"/signup"}>Sign up</Link>
-  //     </p>
-  //     <p className="mt-3">
-  //       Forgot your password <Link to={"/reset-password"}>Reset password</Link>
-  //     </p>
-  //   </div>
-  // );
 
   return (
     <div className="mt-14 mx-auto max-w-md mb-5">
@@ -121,15 +85,29 @@ const Login = ({ login, isAuthenticated }) => {
           Reset password
         </Link>
       </p>
-      <div>
-        <ToastContainer position="bottom-right" draggable />
-      </div>
+      {isError && (
+        <div
+          className="flex items-center p-4 my-4 text-sm text-red-800 border border-red-300 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400 dark:border-red-800"
+          role="alert"
+        >
+          <svg
+            className="flex-shrink-0 inline w-4 h-4 me-3"
+            aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+          >
+            <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
+          </svg>
+          <span className="sr-only">Info</span>
+          <div>
+            <span className="font-medium">Danger alert!</span> <br></br>
+            {message}
+          </div>
+        </div>
+      )}
     </div>
   );
 };
 
-const mapStateToProps = (state) => ({
-  isAuthenticated: state.auth.isAuthenticated,
-});
-
-export default connect(mapStateToProps, { login })(Login);
+export default Login;
