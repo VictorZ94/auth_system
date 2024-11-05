@@ -1,0 +1,6 @@
+Django==4.2
+django-rest-framework
+djoser
+drf-yasg
+django-cors-headers
+psycopg2-binary>=2.8
