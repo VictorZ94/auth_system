@@ -1,0 +1,36 @@
+
+version: '3.9'
+
+services:
+  web:
+    build: .
+    restart: always
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+    depends_on:
+      - pgdb
+    networks:
+      - django-network
+
+  pgdb:
+    image: postgres
+    ports:
+      - "5432:5432"
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_DB: postgres
+      POSTGRES_PASSWORD: Admin1234
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - django-network
+
+volumes:
+  postgres_data:
+
+networks:
+  django-network:
